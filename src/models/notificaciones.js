@@ -11,7 +11,7 @@ class Token extends Model {
                 },
                 token: {
                     type: DataTypes.STRING,
-                    allowNull: false
+                    allowNull: false,
                 }
             }, {
             sequelize,
