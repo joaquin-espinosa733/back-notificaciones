@@ -1,13 +1,8 @@
 const express = require("express");
 const router = express.Router();
-const Token = require("../models/notificaciones")
-const admin = require("firebase-admin");
 
-const serviceAccount = require("../../serviceAccountKey.json");
-admin.initializeApp({
-    credential: admin.credential.cert(serviceAccount),
-});
-
+// Array para almacenar los tokens
+let tokens = [];
 
 router.post('/save-token', async (req, res) => {
     try {
@@ -15,7 +10,7 @@ router.post('/save-token', async (req, res) => {
         console.log("token-------- :", token);
 
         // Buscar si ya existe un token con el mismo valor
-        const existingToken = await Token.findOne({ token: token });
+        const existingToken = tokens.find(t => t === token);
 
         // Si el token ya existe, no lo guardes de nuevo
         if (existingToken) {
@@ -23,9 +18,8 @@ router.post('/save-token', async (req, res) => {
             return res.status(200).send('Token already exists');
         }
 
-        // Si el token no existe, guárdalo en la base de datos
-        const newToken = new Token({ token: token });
-        await newToken.save();
+        // Si el token no existe, guárdalo en el array
+        tokens.push(token);
         res.status(200).send('Token saved successfully');
     } catch (error) {
         console.error('Error saving token:', error);
@@ -33,13 +27,9 @@ router.post('/save-token', async (req, res) => {
     }
 });
 
-
 router.post('/send-notification', async (req, res) => {
     try {
         const { title, body } = req.body;
-
-        // Obtener todos los tokens de la base de datos
-        const tokens = await Token.find({}, 'token');
 
         // Crear la notificación
         const message = {
@@ -47,23 +37,11 @@ router.post('/send-notification', async (req, res) => {
                 title: title,
                 body: body,
             },
-            tokens: tokens.map(token => token.token),
+            tokens: tokens,
         };
 
         // Enviar la notificación
-        const response = await admin.messaging().sendMulticast(message);
-
-        // Manejar la respuesta
-        console.log('Successfully sent notification:', response);
-
-        // Eliminar los tokens fallidos de la base de datos
-        response.responses.forEach(async (response, index) => {
-            if (!response.success) {
-                const tokenToDelete = tokens[index];
-                await Token.deleteOne({ token: tokenToDelete.token });
-                console.log('Deleted token:', tokenToDelete.token);
-            }
-        });
+        console.log('Successfully sent notification:', message);
 
         res.status(200).send('Notification sent successfully');
     } catch (error) {
@@ -71,7 +49,5 @@ router.post('/send-notification', async (req, res) => {
         res.status(500).send('Error sending notification');
     }
 });
-
-
 
 module.exports = router;

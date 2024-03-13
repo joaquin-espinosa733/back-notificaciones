@@ -1,5 +1,5 @@
 const express = require('express')
-const db = require("./config/mongo")
+// const db = require("./config/mongo")
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const morgan = require("morgan")
@@ -45,7 +45,7 @@ app.get("/", (req, res) => {
 
 app.use(require("./src/routes/index"));
 
-db().then(() => console.log("conexion ready"));
+// db().then(() => console.log("conexion ready"));
 app.listen(port, () =>
     console.log(`Example app listening on port ${port}!`)
 )
