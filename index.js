@@ -1,5 +1,5 @@
 const express = require('express')
-const db = require("./config/mongo")
+const sequelize = require('./config/mongo');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const morgan = require("morgan")
@@ -46,6 +46,14 @@ app.get("/", (req, res) => {
 app.use(require("./src/routes/index"));
 
 // db().then(() => console.log("conexion ready"));
-app.listen(port, () =>
-    console.log(`Example app listening on port ${port}!`)
-)
+
+sequelize.sync({ force: false })
+  .then(() => {
+    console.log('Database connected.');
+    app.listen(port, () => {
+      console.log(`Server is running on port ${port}`);
+    });
+  })
+  .catch((error) => {
+    console.error('Error connecting to the database:', error);
+  });

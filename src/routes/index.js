@@ -1,9 +1,8 @@
 const express = require("express");
 const router = express.Router();
-const Token = require("../models/notificaciones")
 const admin = require("firebase-admin");
-
 const serviceAccount = require("../../serviceAccountKey.json");
+const Token = require("../models/notificaciones");
 admin.initializeApp({
     credential: admin.credential.cert(serviceAccount),
 });
@@ -39,7 +38,7 @@ router.post('/send-notification', async (req, res) => {
         const { title, body } = req.body;
 
         // Obtener todos los tokens de la base de datos
-        const tokens = await Token.find({}, 'token');
+        const tokens = await Token.findAll({ attributes: ['token'] });
 
         // Crear la notificación
         const message = {
@@ -60,11 +59,10 @@ router.post('/send-notification', async (req, res) => {
         response.responses.forEach(async (response, index) => {
             if (!response.success) {
                 const tokenToDelete = tokens[index];
-                await Token.deleteOne({ token: tokenToDelete.token });
+                await Token.destroy({ where: { token: tokenToDelete.token } });
                 console.log('Deleted token:', tokenToDelete.token);
             }
         });
-
         res.status(200).send('Notification sent successfully');
     } catch (error) {
         console.error('Error sending notification:', error);
