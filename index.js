@@ -14,6 +14,9 @@ app.use(express.json())
 app.use(morgan("dev"))
 app.use(cors());
 
+
+app.get('/', (req, res) => res.send('Hello World!'));
+
 app.use(require("./src/routes/index"));
 
 db().then(() => console.log("conexion ready"));
