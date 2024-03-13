@@ -1,5 +1,11 @@
 const express = require("express");
 const router = express.Router();
+const admin = require("firebase-admin");
+
+const serviceAccount = require("../../serviceAccountKey.json");
+admin.initializeApp({
+    credential: admin.credential.cert(serviceAccount),
+});
 
 // Array para almacenar los tokens
 let tokens = [];
@@ -9,7 +15,7 @@ router.post('/save-token', async (req, res) => {
         const { token } = req.body;
         console.log("token-------- :", token);
 
-        // Buscar si ya existe un token con el mismo valor
+        // Buscar si ya existe un token con el mismo valor en el array
         const existingToken = tokens.find(t => t === token);
 
         // Si el token ya existe, no lo guardes de nuevo
