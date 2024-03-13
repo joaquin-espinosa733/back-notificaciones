@@ -15,7 +15,7 @@ router.post('/save-token', async (req, res) => {
         console.log("token-------- :", token);
 
         // Buscar si ya existe un token con el mismo valor
-        const existingToken = await Token.findOne({ token: token });
+        const existingToken = await Token.findOne({ where: { token: token } });
 
         // Si el token ya existe, no lo guardes de nuevo
         if (existingToken) {
@@ -31,6 +31,7 @@ router.post('/save-token', async (req, res) => {
         res.status(500).send('Error saving token');
     }
 });
+
 
 
 
