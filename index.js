@@ -21,7 +21,7 @@ app.get("/", (req, res) => {
         </body>
       </html>`
       res.send(htmlResponse);
-  })
+  });
 
 app.use(require("./src/routes/index"));
 
