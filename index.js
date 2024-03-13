@@ -1,5 +1,5 @@
 const express = require('express')
-// const db = require("./config/mongo")
+const db = require("./config/mongo")
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const morgan = require("morgan")

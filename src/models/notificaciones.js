@@ -1,19 +1,22 @@
-const mongoose = require('mongoose');
+const { DataTypes } = require("sequelize");
 
-// Define el esquema para el token de notificación
-const tokenSchema = new mongoose.Schema({
-    token: {
-        type: String,
-        required: true,
-        unique: true
+module.exports = async (sequelize) => {
+  const TokenModel = sequelize.define(
+    "Token",
+    {
+      token: {
+        type: DataTypes.STRING,
+        primaryKey: true,
+        allowNull: false,
+      },
     },
-    createdAt: {
-        type: Date,
-        default: Date.now
+    {
+      timeStamp: true
     }
-});
+  );
 
-// Crea el modelo Token basado en el esquema
-const Token = mongoose.model('Token', tokenSchema);
+  // Sincroniza el modelo con la base de datos
+  await sequelize.sync();
 
-module.exports = Token;
+  return TokenModel;
+};
