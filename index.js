@@ -15,7 +15,18 @@ app.use(morgan("dev"))
 app.use(cors());
 
 
-app.get('/', (req, res) => res.send('Hello World!'));
+app.get("/", (req, res) => {
+    const htmlResponse =
+      `<html>
+        <head>
+          <title>Node.js y express</title>
+        </head>
+        <body>
+          <h1>Proyecto levantado</h1>
+        </body>
+      </html>`
+      res.send(htmlResponse);
+  })
 
 app.use(require("./src/routes/index"));
 
