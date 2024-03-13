@@ -24,14 +24,14 @@ router.post('/save-token', async (req, res) => {
         }
 
         // Si el token no existe, guárdalo en la base de datos
-        const newToken = new Token({ token: token });
-        await newToken.save();
+        await Token.create({ token: token });
         res.status(200).send('Token saved successfully');
     } catch (error) {
         console.error('Error saving token:', error);
         res.status(500).send('Error saving token');
     }
 });
+
 
 
 router.post('/send-notification', async (req, res) => {
