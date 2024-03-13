@@ -37,7 +37,7 @@ app.get("/", (req, res) => {
           <title>Node.js y express</title>
         </head>
         <body>
-          <h1>Proyecto levantado</h1>
+          <h1>Proyecto levantado notificaciones</h1>
         </body>
       </html>`
     res.send(htmlResponse);
