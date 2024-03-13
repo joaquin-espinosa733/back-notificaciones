@@ -1,5 +1,7 @@
 const express = require('express')
 const db = require("./config/mongo")
+const cookieParser = require('cookie-parser');
+const bodyParser = require('body-parser');
 const morgan = require("morgan")
 const cors = require("cors")
 const app = express()
@@ -12,9 +14,9 @@ const corsOptions = {
 };
 
 
-server.use(bodyParser.urlencoded({ extended: true, limit: '50mb' }));
-server.use(bodyParser.json({ limit: '50mb' }));
-server.use(cookieParser());
+app.use(bodyParser.urlencoded({ extended: true, limit: '50mb' }));
+app.use(bodyParser.json({ limit: '50mb' }));
+app.use(cookieParser());
 app.use(express.json())
 app.use(morgan("dev"))
 app.use(cors(corsOptions));
