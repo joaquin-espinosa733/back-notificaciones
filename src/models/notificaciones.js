@@ -6,7 +6,6 @@ class Token extends Model {
             {
                 token: {
                     type: DataTypes.STRING,
-                    primaryKey: true,
                 },
 
             },

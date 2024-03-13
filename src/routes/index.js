@@ -1,8 +1,9 @@
 const express = require("express");
 const router = express.Router();
 const admin = require("firebase-admin");
-const serviceAccount = require("../../serviceAccountKey.json");
 const Token = require("../models/notificaciones");
+
+const serviceAccount = require("../../serviceAccountKey.json");
 admin.initializeApp({
     credential: admin.credential.cert(serviceAccount),
 });
