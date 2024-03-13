@@ -4,15 +4,20 @@ class Token extends Model {
     static initialize(sequelize) {
         Token.init(
             {
+                id: {
+                    type: DataTypes.INTEGER,
+                    primaryKey: true,
+                    autoIncrement: true
+                },
                 token: {
                     type: DataTypes.STRING,
-                },
-
-            },
-            {
-                sequelize,
-                tableName: 'tokens'
-            }
+                    allowNull: false
+                }
+            }, {
+            sequelize,
+            modelName: 'Token',
+            tableName: 'tokens'
+        }
         );
     }
 }
