@@ -40,8 +40,11 @@ router.post('/send-notification', async (req, res) => {
             tokens: tokens,
         };
 
-        // Enviar la notificación
-        console.log('Successfully sent notification:', message);
+        // Enviar la notificación utilizando FCM
+        const response = await admin.messaging().sendMulticast(message);
+
+        // Manejar la respuesta
+        console.log('Successfully sent notification:', response);
 
         res.status(200).send('Notification sent successfully');
     } catch (error) {
